@@ -8,7 +8,7 @@ const client = new Client({
 });
 
 const TOKEN = process.env.TOKEN;
-const ROLE_ID = "827649224770322453";
+const ROLE_ID = "1491485420100521994";
 
 client.on("clientReady", () => {
   console.log(`${client.user.tag} aktif!`);
