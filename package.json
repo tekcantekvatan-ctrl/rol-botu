@@ -1,16 +1,19 @@
 {
   "name": "rolbotu",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord rol verme ve satın‑alım botu",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
+    "start": "node index.js",              // Botu başlatmak için `npm start`
+    "deploy": "node deploy-commands.js",   // Slash komutlarını Discord’a kaydetmek için `npm run deploy`
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "discord.js": "^14.26.2"
+    "discord.js": "^14.26.2",   // en güncel (senin 14.26.2 sürümün)
+    "dotenv": "^16.4.5"
   }
 }
