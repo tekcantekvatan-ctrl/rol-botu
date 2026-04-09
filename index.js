@@ -27,7 +27,7 @@ const ROLE_ID = "1128692866567381025";
 const JOIN_CHANNEL_ID = "1422509177481199669";
 const LEAVE_CHANNEL_ID = "1491496841437773974";
 
-client.on("clientReady", () => {
+client.on("ready", () => {
   console.log(`${client.user.tag} aktif!`);
 });
 
