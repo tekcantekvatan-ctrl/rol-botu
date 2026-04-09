@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node index.js",
-    "deploy": "node deploy-commands.js",
+    "start": "node index.js",               // Railway bu komutu çalıştırır
+    "deploy": "node deploy-commands.js",    // Komutları Discord’a kaydetmek için
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
