@@ -1,2 +1,8 @@
-# .env dosyasını versiyon kontrolünden dışarıda tut
+# node_modules – NPM paketleri (kütüphaneler) repo’ya gönderilmez
+node_modules/
+
+# .env – Bot tokeni, client‑id, guild‑id gibi gizli bilgiler
 .env
+
+# (opsiyonel) Linux/Mac’da gizli dosya oluşturma hatalarından kaçınmak için
+.DS_Store
