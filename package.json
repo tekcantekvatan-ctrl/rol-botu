@@ -1,12 +1,12 @@
 {
   "name": "rolbotu",
   "version": "1.0.0",
-  "description": "Discord rol verme ve satın‑alım botu",
+  "description": "Discord rol verme ve satın-alım botu",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node index.js",               // Railway bu komutu çalıştırır
-    "deploy": "node deploy-commands.js",    // Komutları Discord’a kaydetmek için
+    "start": "node index.js",
+    "deploy": "node deploy-commands.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
