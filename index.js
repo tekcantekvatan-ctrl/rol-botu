@@ -1,4 +1,6 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { readdirSync } = require('fs');
+const path = require('path');
 
 const client = new Client({
   intents: [
@@ -6,6 +8,18 @@ const client = new Client({
     GatewayIntentBits.GuildMembers
   ]
 });
+
+// ── Slash komutlarını yükle ──────────────────────────────────────────────────
+client.commands = new Collection();
+
+const commandFiles = readdirSync(path.join(__dirname, 'commands'))
+  .filter(f => f.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
+}
+
 
 const TOKEN = process.env.TOKEN;
 const ROLE_ID = "1128692866567381025";
@@ -50,6 +64,30 @@ client.on("guildMemberRemove", (member) => {
     channel.send(`❌ ${member.user.tag} sunucudan ayrıldı!`);
   }
 
+});
+
+// ⚡ SLASH KOMUT İŞLEYİCİ
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) {
+    console.error(`'${interaction.commandName}' adlı komut bulunamadı.`);
+    return;
+  }
+
+  try {
+    await command.execute(interaction);
+  } catch (err) {
+    console.error(`Komut çalıştırılırken hata oluştu (${interaction.commandName}):`, err);
+    const errorMsg = { content: '❌ Komut çalıştırılırken bir hata oluştu.', ephemeral: true };
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp(errorMsg);
+    } else {
+      await interaction.reply(errorMsg);
+    }
+  }
 });
 
 client.login(TOKEN);
