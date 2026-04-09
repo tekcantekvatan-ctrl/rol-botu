@@ -2,61 +2,56 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    // ── Komut Tanımı (setName('buy') kesinlikle **buy** olmalı) ────────
+    // ── Komut Tanımı ────────────────────────────────────────────────────
     data: new SlashCommandBuilder()
         .setName('buy')
-        .setDescription('Satın alım linki ve fiyatını gösterir')
-        .addStringOption(opt =>
-            opt.setName('urun')
-               .setDescription('Satın almak istediğiniz ürünün adı')
-               .setRequired(true)),
+        .setDescription('Tüm ürünlerin fiyat listesini gösterir'),
 
     // ── Komut Çalıştırma (execute) ──────────────────────────────────────
     async execute(interaction) {
-        // Kullanıcıdan gelen değer → küçük harfe çevir (karşılaştırma kolaylığı)
-        const urun = interaction.options.getString('urun').toLowerCase();
 
         // ------------------- Ürün veri tabanı -------------------
-        // İsterseniz bu kısmı ayrı bir JSON dosyasına taşıyabilirsiniz.
+        // Yeni ürün eklemek için buraya bir nesne daha ekleyin.
         const urunDB = {
             premium: {
+                emoji: '⭐',
                 price: '49,99 TL',
                 link: 'https://ornek.com/premium',   // ← kendi linkinizi koyun
                 description: 'Sunucu içinde tüm premium özellikler.'
             },
             vip: {
+                emoji: '💎',
                 price: '79,99 TL',
                 link: 'https://ornek.com/vip',
                 description: 'VIP rolü ve özel kanallar.'
             },
             boost: {
+                emoji: '🚀',
                 price: '19,99 TL',
                 link: 'https://ornek.com/boost',
                 description: 'Sunucu boost paketi.'
             }
         };
 
-        // ------------------- Geçerli ürün kontrolü -------------------
-        if (!urunDB[urun]) {
-            return interaction.reply({
-                content: `❌ **${urun}** adlı bir ürün bulunamadı. Lütfen geçerli bir ürün adı girin.`,
-                ephemeral: true                     // sadece komutu kullanan görür
-            });
-        }
-
-        const data = urunDB[urun];
-
-        // ------------------- Embed (görsel mesaj) -------------------
+        // ------------------- Fiyat listesi embed'i -------------------
         const embed = new EmbedBuilder()
-            .setColor('#00FF00')
-            .setTitle(`🛒 ${urun.charAt(0).toUpperCase() + urun.slice(1)} Satın Al`)
-            .setDescription(`**${data.price}** karşılığında aşağıdaki link üzerinden satın alabilirsiniz.`)
-            .addFields(
-                { name: 'Açıklama', value: data.description, inline: false },
-                { name: 'Satın Al Linki', value: `[Tıkla](${data.link})`, inline: true }
-            )
-            .setFooter({ text: `${interaction.user.username} - Alışveriş Botu` })
+            .setColor('#FFD700')
+            .setTitle('🛒 Fiyat Listesi')
+            .setDescription('Aşağıdaki paketlerden birini satın almak için ilgili linke tıklayın.')
+            .setFooter({ text: `${interaction.user.username} tarafından istendi • Alışveriş Botu` })
             .setTimestamp();
+
+        // Her ürün için ayrı bir field ekle
+        for (const [ad, data] of Object.entries(urunDB)) {
+            const baslik = `${data.emoji} ${ad.charAt(0).toUpperCase() + ad.slice(1)}`;
+            const icerik = [
+                `💰 **Fiyat:** ${data.price}`,
+                `📄 **Açıklama:** ${data.description}`,
+                `🔗 **Satın Al:** [Tıkla](${data.link})`
+            ].join('\n');
+
+            embed.addFields({ name: baslik, value: icerik, inline: false });
+        }
 
         await interaction.reply({ embeds: [embed] });
     }
