@@ -1,0 +1,1 @@
+module.exports = { name: 'ping', description: 'Bota ping atar', execute: async (interaction) => { await interaction.reply(`🏓 Pong! ${interaction.client.ws.ping}ms`); } };
