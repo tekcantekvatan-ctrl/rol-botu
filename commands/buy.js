@@ -2,26 +2,27 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    // ────────────────── Komut tanımı ──────────────────
+    // ── Komut Tanımı (setName('buy') kesinlikle **buy** olmalı) ────────
     data: new SlashCommandBuilder()
         .setName('buy')
         .setDescription('Satın alım linki ve fiyatını gösterir')
         .addStringOption(opt =>
             opt.setName('urun')
-                .setDescription('Satın almak istediğiniz ürünün adı')
-                .setRequired(true)),
+               .setDescription('Satın almak istediğiniz ürünün adı')
+               .setRequired(true)),
 
-    // ────────────────── Çalıştırma (execute) ──────────────────
+    // ── Komut Çalıştırma (execute) ──────────────────────────────────────
     async execute(interaction) {
+        // Kullanıcıdan gelen değer → küçük harfe çevir (karşılaştırma kolaylığı)
         const urun = interaction.options.getString('urun').toLowerCase();
 
         // ------------------- Ürün veri tabanı -------------------
-        // Bu objeyi bir JSON dosyasına taşıyabilirsiniz (isteğe bağlı)
+        // İsterseniz bu kısmı ayrı bir JSON dosyasına taşıyabilirsiniz.
         const urunDB = {
             premium: {
                 price: '49,99 TL',
-                link: 'https://ornek.com/premium',
-                description: 'Sunucu içi tüm premium özellikler.'
+                link: 'https://ornek.com/premium',   // ← kendi linkinizi koyun
+                description: 'Sunucu içinde tüm premium özellikler.'
             },
             vip: {
                 price: '79,99 TL',
@@ -35,11 +36,11 @@ module.exports = {
             }
         };
 
-        // ------------------- Hata kontrolü -------------------
+        // ------------------- Geçerli ürün kontrolü -------------------
         if (!urunDB[urun]) {
             return interaction.reply({
                 content: `❌ **${urun}** adlı bir ürün bulunamadı. Lütfen geçerli bir ürün adı girin.`,
-                ephemeral: true               // sadece komutu kullanan görür
+                ephemeral: true                     // sadece komutu kullanan görür
             });
         }
 
