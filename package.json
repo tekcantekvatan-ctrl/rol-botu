@@ -1,7 +1,7 @@
 {
   "name": "rolbotu",
   "version": "1.0.0",
-  "description": "Discord rol verme ve satın-alım botu",
+  "description": "Discord rol verme ve satin-alim botu",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
